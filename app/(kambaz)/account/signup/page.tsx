@@ -7,8 +7,8 @@ export default function Signup() {
       <input placeholder="password" type="password" className="wd-password" /><br />
       <input placeholder="verify password"
         type="password" className="wd-password-verify" /><br />
-      <Link href="Profile" > Sign up </Link><br />
-      <Link href="Signin" > Sign in </Link>
+      <Link href="profile" > Sign up </Link><br />
+      <Link href="signin" > Sign in </Link>
     </div>
   );
 }
