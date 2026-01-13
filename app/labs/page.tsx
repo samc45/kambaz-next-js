@@ -3,6 +3,7 @@ export default function labs() {
   return (
     <div id="wd-labs">
       <h1>Labs</h1>
+      <h3 style={{ fontStyle: "italic" }}>Sam Cohen - CS4550 Section 02</h3>
       <ul>
         <li>
           <Link href="/labs/lab1" id="wd-lab1-link">
