@@ -106,19 +106,27 @@ export default function AssignmentEditor() {
               <br />
               <label htmlFor="wd-due-date">Due</label>
               <br />
-              <input id="wd-due-date" type="date" />
+              <input defaultValue={new Date().toISOString().substring(0, 10)} id="wd-due-date" type="date" />
               <br />
               <br />
               <div style={{ display: "flex", gap: "20px" }}>
                 <div>
                   <label htmlFor="wd-available-from">Available from</label>
                   <br />
-                  <input id="wd-available-from" type="date" />
+                  <input
+                    defaultValue={new Date("01/01/2026").toISOString().substring(0, 10)}
+                    id="wd-available-from"
+                    type="date"
+                  />
                 </div>
                 <div>
                   <label htmlFor="wd-available-until">Available until</label>
                   <br />
-                  <input id="wd-available-until" type="date" />
+                  <input
+                    defaultValue={new Date().toISOString().substring(0, 10)}
+                    id="wd-available-until"
+                    type="date"
+                  />
                 </div>
               </div>
             </td>
