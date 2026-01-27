@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
-import { FaAlignJustify } from "react-icons/fa6";
+import { RxHamburgerMenu } from "react-icons/rx";
 export default async function CoursesLayout(
   { children, params }: Readonly<{ children: ReactNode; params: Promise<{ cid: string }> }>) {
   const { cid } = await params;
   return (
     <div id="wd-courses">
       <h2 className="text-danger">
-        <FaAlignJustify className="me-4 fs-4 mb-1" />
-        Course {cid}
+        <RxHamburgerMenu className="me-4 fs-3 mb-1" />
+        <span className="font-bold fs-4">Course {cid}</span>
       </h2>
       <hr />
       <div className="d-flex">

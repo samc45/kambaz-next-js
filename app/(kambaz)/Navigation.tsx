@@ -1,6 +1,5 @@
 "use client";
 
-import { AiOutlineDashboard } from "react-icons/ai";
 import { IoCalendarOutline } from "react-icons/io5";
 import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
 import { FaInbox, FaRegCircleUser } from "react-icons/fa6";
@@ -8,6 +7,7 @@ import { ListGroup, ListGroupItem } from "react-bootstrap";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { TfiDashboard } from "react-icons/tfi";
 
 type NavigationOptionProps = {
   href: string;
@@ -46,7 +46,7 @@ function NavigationOption(props: NavigationOptionProps) {
 export default function KambazNavigation() {
   // possible navigation options to show to the user
   const navigationOptions: NavigationOptionProps[] = [
-    { href: "/dashboard", icon: <AiOutlineDashboard />, label: "Dashboard", id: "wd-dashboard-link" },
+    { href: "/dashboard", icon: <TfiDashboard />, label: "Dashboard", id: "wd-dashboard-link" },
     { href: "/courses", icon: <LiaBookSolid />, label: "Courses", id: "wd-courses-link" },
     { href: "/calendar", icon: <IoCalendarOutline />, label: "Calendar", id: "wd-calendar-link" },
     { href: "/inbox", icon: <FaInbox />, label: "Inbox", id: "wd-inbox-link" },

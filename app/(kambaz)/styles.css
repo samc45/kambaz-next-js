@@ -19,15 +19,20 @@ body * {
   border-left: 3px solid black !important;
 }
 
+.btn {
+  border-radius: 3px !important;
+}
+
 .btn-secondary {
-  --bs-btn-color: #000 !important;
-  --bs-btn-bg: #c7cdd1 !important;
-  --bs-btn-border-color: #c7cdd1 !important;
+  --bs-btn-color: #273540 !important;
+  --bs-btn-bg: #f2f4f4 !important;
+  --bs-btn-border-color: #e8eaec !important;
   --bs-btn-hover-color: #fff !important;
+  --border-radius: 0.25rem !important;
 }
 
 .bg-secondary {
-  --bs-secondary-rgb: 199, 205, 209;
+  --bs-secondary-rgb: 228, 232, 232;
 }
 
 .list-group-item {

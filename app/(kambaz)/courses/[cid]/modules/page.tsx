@@ -20,11 +20,9 @@ export default function Modules() {
             <ListGroupItem className="wd-lesson p-3 ps-1">
               <BsGripVertical className="me-2 fs-3" /> Introduction to the course <LessonControlButtons />
             </ListGroupItem>
-            ...
           </ListGroup>
         </ListGroupItem>
       </ListGroup>
     </div>
-
   );
 }
