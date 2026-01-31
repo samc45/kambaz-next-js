@@ -27,19 +27,23 @@ function NavigationOption(props: NavigationOptionProps) {
   const pathname = usePathname();
   const isActive = pathname.includes(props.href);
 
+  const iconColor = props.label == "Account"
+    ? isActive ? "text-danger" : "text-white"
+    : "text-danger"
+
   return (
     <ListGroupItem className={`border-0 bg-black text-center ${isActive ? 'bg-white' : ''}`} as="div">
       <Link
         href={props.href}
         id={props.id}
-        className={`text-decoration-none text-danger ${isActive ? "text-danger font-bold" : "text-white"}`}
+        className={`text-decoration-none ${isActive ? 'text-danger' : 'text-white'}`}
       >
-        <span className={`fs-1 d-block text-danger ${isActive ? "font-bold" : ""}`}>
+        <span className={`fs-1 d-block ${isActive ? "font-bold" : ""} ${iconColor}`}>
           {props.icon}
         </span>
         {props.label}
       </Link>
-    </ListGroupItem>
+    </ListGroupItem >
   );
 }
 
