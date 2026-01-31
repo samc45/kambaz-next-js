@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Card, FormControl } from "react-bootstrap";
 export default function Signin() {
   return (
-    <div id="wd-signin-screen" className="w-50 mx-auto mt-5">
+    <div id="wd-signin-screen" className="w-50 mx-auto mt-5" style={{ minWidth: '400px' }}>
       <Card className="w-75 p-5 mb-3 d-flex align-items-center gap-2">
         <h3 className="mb-3">Sign In</h3>
         <FormControl id="wd-username"

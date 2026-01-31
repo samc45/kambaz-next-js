@@ -3,7 +3,7 @@ import { Card, FormControl } from "react-bootstrap";
 import { IoIosLogOut } from "react-icons/io";
 export default function Profile() {
   return (
-    <div id="wd-profile-screen" className="w-50 mx-auto mt-5">
+    <div id="wd-profile-screen" className="w-50 mx-auto mt-5" style={{ minWidth: '400px' }}>
       <Card className="w-75 p-5 mb-3 d-flex align-items-center gap-2">
         <h3>Profile</h3>
         <FormControl defaultValue="alice" placeholder="username" className="wd-username" />
@@ -18,7 +18,7 @@ export default function Profile() {
           <option value="FACULTY">Faculty</option>
           <option value="STUDENT">Student</option>
         </FormControl>
-        <Link href="signin" className="d-flex flex-row align-items-center mt-4" >
+        <Link href="/account/signin" className="btn btn-danger d-flex flex-row align-items-center mt-4" >
           <IoIosLogOut className="me-1" />
           Sign Out
         </Link>

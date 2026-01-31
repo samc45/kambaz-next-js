@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { Button, Card, Form, FormControl, FormGroup, FormLabel, Table } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
-import Datetime from 'react-datetime';
-import "react-datetime/css/react-datetime.css";
 import { FaCalendarAlt } from "react-icons/fa";
 
 export default function AssignmentEditor() {
@@ -137,23 +135,38 @@ export default function AssignmentEditor() {
                   <div className="mb-3">
                     <label>Due</label>
                     <div className="d-flex flex-row justify-content-start align-items-center gap-2">
-                      <FaCalendarAlt />
-                      <Datetime initialValue={new Date()} />
+                      <InputGroup className="mb-3">
+                        <Form.Control
+                          type="date"
+                          id="wd-due-date"
+                          defaultValue={new Date().toISOString().split('T')[0]}
+                        />
+                      </InputGroup>
                     </div>
                   </div>
-                  <div className="w-full" style={{ display: "flex", gap: "20px" }}>
+                  <div className="d-flex w-full gap-3 justify-content-between">
                     <div>
                       <label>Available from</label>
                       <div className="d-flex flex-row justify-content-start align-items-center gap-2">
-                        <FaCalendarAlt className="flex-shrink-0" />
-                        <Datetime initialValue={new Date()} />
+                        <InputGroup className="mb-3">
+                          <Form.Control
+                            type="date"
+                            id="wd-available-from"
+                            defaultValue={new Date().toISOString().split('T')[0]}
+                          />
+                        </InputGroup>
                       </div>
                     </div>
                     <div>
                       <label>Available until</label>
                       <div className="d-flex flex-row justify-content-start align-items-center gap-2">
-                        <FaCalendarAlt className="flex-shrink-0" />
-                        <Datetime initialValue={new Date()} />
+                        <InputGroup className="mb-3">
+                          <Form.Control
+                            type="date"
+                            id="wd-available-until"
+                            defaultValue={new Date().toISOString().split('T')[0]}
+                          />
+                        </InputGroup>
                       </div>
                     </div>
                   </div>
