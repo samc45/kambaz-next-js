@@ -23,6 +23,10 @@ body * {
   border-radius: 3px !important;
 }
 
+.form-control {
+  border-radius: 3px !important;
+}
+
 .btn-secondary {
   --bs-btn-color: #273540 !important;
   --bs-btn-bg: #f2f4f4 !important;
@@ -41,4 +45,8 @@ body * {
 
 .wd-lesson {
   border-left: 3px solid green !important;
+}
+
+.assignment-edit-table td {
+  border: none !important;
 }

@@ -32,9 +32,9 @@ function NavigationOption(props: NavigationOptionProps) {
       <Link
         href={props.href}
         id={props.id}
-        className={`text-decoration-none ${isActive ? "text-danger font-bold" : "text-white"}`}
+        className={`text-decoration-none text-danger ${isActive ? "text-danger font-bold" : "text-white"}`}
       >
-        <span className={`fs-1 d-block ${isActive ? "text-danger font-bold" : "text-white"}`}>
+        <span className={`fs-1 d-block text-danger ${isActive ? "font-bold" : ""}`}>
           {props.icon}
         </span>
         {props.label}
@@ -46,6 +46,7 @@ function NavigationOption(props: NavigationOptionProps) {
 export default function KambazNavigation() {
   // possible navigation options to show to the user
   const navigationOptions: NavigationOptionProps[] = [
+    { href: "/account", icon: <FaRegCircleUser />, label: "Account", id: "wd-account-link" },
     { href: "/dashboard", icon: <TfiDashboard />, label: "Dashboard", id: "wd-dashboard-link" },
     { href: "/courses", icon: <LiaBookSolid />, label: "Courses", id: "wd-courses-link" },
     { href: "/calendar", icon: <IoCalendarOutline />, label: "Calendar", id: "wd-calendar-link" },
@@ -61,19 +62,6 @@ export default function KambazNavigation() {
         <Image src="/images/NEU.png" width={75} height={75} alt="Northeastern University" />
       </ListGroupItem>
       <br />
-
-      <ListGroupItem className={`border-0 bg-black text-center`} as="div">
-        <Link
-          href={"/account"}
-          id={"wd-account-link"}
-          className={`text-decoration-none text-white`}
-        >
-          <span className={`fs-1 d-block text-white`}>
-            <FaRegCircleUser />
-          </span>
-          Account
-        </Link>
-      </ListGroupItem>
 
       {navigationOptions.map((option) => (
         <NavigationOption key={option.id} {...option} />

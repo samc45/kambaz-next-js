@@ -6,10 +6,12 @@ export default async function CoursesLayout(
   const { cid } = await params;
   return (
     <div id="wd-courses">
-      <h2 className="text-danger">
+      <div className="d-flex align-items-center text-danger">
         <RxHamburgerMenu className="me-4 fs-3 mb-1" />
-        <span className="font-bold fs-4">Course {cid}</span>
-      </h2>
+        <span className="font-bold fs-5 text-uppercase">
+          Course {cid}
+        </span>
+      </div>
       <hr />
       <div className="d-flex">
         <div className="d-none d-md-block">

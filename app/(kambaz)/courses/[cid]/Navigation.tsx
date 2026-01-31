@@ -7,7 +7,7 @@ export default function CourseNavigation() {
   const pathname = usePathname();
 
   function currentlyActiveOption(path: string) {
-    return pathname.endsWith(path) ? "active fw-bold" : "text-danger";
+    return pathname.includes(path) ? "active fw-bold" : "text-danger";
   }
 
   return (
