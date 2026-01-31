@@ -145,14 +145,14 @@ export default function AssignmentEditor() {
                     <div>
                       <label>Available from</label>
                       <div className="d-flex flex-row justify-content-start align-items-center gap-2">
-                        <FaCalendarAlt />
+                        <FaCalendarAlt className="flex-shrink-0" />
                         <Datetime initialValue={new Date()} />
                       </div>
                     </div>
                     <div>
                       <label>Available until</label>
                       <div className="d-flex flex-row justify-content-start align-items-center gap-2">
-                        <FaCalendarAlt />
+                        <FaCalendarAlt className="flex-shrink-0" />
                         <Datetime initialValue={new Date()} />
                       </div>
                     </div>
