@@ -1,5 +1,12 @@
 import Link from "next/link";
-import Image from "next/image";
+import Row from "react-bootstrap/esm/Row";
+import Col from "react-bootstrap/esm/Col";
+import Card from "react-bootstrap/esm/Card";
+import CardBody from "react-bootstrap/esm/CardBody";
+import CardText from "react-bootstrap/esm/CardText";
+import CardTitle from "react-bootstrap/esm/CardTitle";
+import CardImg from "react-bootstrap/esm/CardImg";
+import { TfiWrite } from "react-icons/tfi";
 
 
 // Temporary representation of a course, to easily show 7
@@ -8,6 +15,48 @@ interface Course {
   title: string;
   description: string;
   imageUrl: string;
+}
+
+function CourseCard({ course }: { course: Course }) {
+  return (
+    <Col className="wd-dashboard-course">
+      <Card>
+        <Link href={`/courses/${course.id}/home`}
+          className="wd-dashboard-course-link text-decoration-none text-dark position-relative">
+          <div className="overflow-hidden" style={{
+            position: "relative",
+            width: "100%",
+            height: 160,
+          }}>
+            <CardImg
+              variant="top"
+              src={course.imageUrl}
+              width="100%"
+              height="100%"
+              style={{ objectFit: "cover" }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                background: "rgba(0,0,0,0.3)",
+              }}
+            />
+          </div>
+          <CardBody>
+            <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden fw-bold">{course.title}</CardTitle>
+            <CardText className="wd-dashboard-course-description overflow-hidden h-fit fw-light">
+              {course.description}
+            </CardText>
+            <TfiWrite />
+          </CardBody>
+        </Link>
+      </Card>
+    </Col>
+  );
 }
 
 export default function Dashboard() {
@@ -59,40 +108,18 @@ export default function Dashboard() {
 
   return (
     <div id="wd-dashboard">
-      <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
-      <div
-        id="wd-dashboard-courses"
-        style={{
-          display: "grid",
-          /**
-           * TODO: Use grid system via Tailwind for simpler implementation
-           * 
-           * This will, temporarily, use inline style to quickly prototype
-           * the dashboard layout. ideally this should be done using flexbox
-           * and tailwind for a simpler and more maintainable approach.
-           * ref: https://www.w3schools.com/cssref/pr_grid-template-columns.php
-           */
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "2rem",
-          alignItems: "center",
-        }}>
-        {courses.map((course) => (
-          <div key={course.id} className="wd-dashboard-course">
-            <Link
-              key={course.id}
-              href={`/courses/${course.id}`}
-              className="wd-dashboard-course-link"
-            >
-              <Image src={course.imageUrl} width={300} height={180} alt={course.title} />
-              <div>
-                <h5>{course.title}</h5>
-                <p className="wd-dashboard-course-title">{course.description}</p>
-                <button>Go</button>
-              </div>
-            </Link>
-          </div>
-        ))}
+      <h1 id="wd-dashboard-title" className="fw-light">Dashboard</h1>
+      <hr />
+      <div className="p-4">
+        <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
+        <hr />
+        <div id="wd-dashboard-courses">
+          <Row xs={1} md={3} lg={4} className="g-4">
+            {courses.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </Row>
+        </div>
       </div>
     </div>
   );

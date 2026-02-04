@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body * {
+  font-family: var(--font-lato), sans-serif;
+}
+
+@media (min-width: 768px) {
+  #wd-kambaz .wd-main-content-offset {
+    padding-left: 140px !important;
+  }
+}
+
+.list-group.wd>.list-group-item.active {
+  color: black;
+  background-color: white;
+  border-left: 3px solid black !important;
+}
+
+.btn {
+  border-radius: 3px !important;
+}
+
+.form-control {
+  border-radius: 3px !important;
+}
+
+.btn-secondary {
+  --bs-btn-color: #273540 !important;
+  --bs-btn-bg: #f2f4f4 !important;
+  --bs-btn-border-color: #e8eaec !important;
+  --bs-btn-hover-color: #fff !important;
+  --border-radius: 0.25rem !important;
+}
+
+.bg-secondary {
+  --bs-secondary-rgb: 228, 232, 232;
+}
+
+.list-group-item {
+  --bs-list-group-border-color: gray;
+}
+
+.wd-lesson {
+  border-left: 3px solid green !important;
+}
+
+.assignment-edit-table td {
+  border: none !important;
+}
