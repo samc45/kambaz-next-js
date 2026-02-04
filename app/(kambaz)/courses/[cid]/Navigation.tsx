@@ -20,8 +20,8 @@ export default function CourseNavigation() {
         className={`list-group-item ${currentlyActiveOption("modules")} border-0`}> Modules
       </Link>
       <br />
-      <Link href="/courses/1234/piazza" id="wd-course-piazza-link"
-        className={`list-group-item ${currentlyActiveOption("piazza")} border-0`}> Piazza
+      <Link href="/courses/1234/pazza" id="wd-course-pazza-link"
+        className={`list-group-item ${currentlyActiveOption("pazza")} border-0`}> Pazza
       </Link>
       <br />
       <Link href="/courses/1234/zoom" id="wd-course-zoom-link"

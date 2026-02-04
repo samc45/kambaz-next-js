@@ -1,0 +1,40 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+:root {
+  --pazza-blue: #0c5fab;
+  --pazza-dark-blue: #094780;
+  --pazza-gray: #494A4C;
+}
+
+.text-pazza-gray {
+  color: var(--pazza-gray);
+}
+
+.bg-pazza-blue {
+  background-color: var(--pazza-blue);
+}
+
+.input {
+  border-radius: 7px;
+}
+
+.btn {
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background-color: var(--pazza-blue);
+  border-color: var(--pazza-blue);
+}
+
+.btn-primary:hover {
+  background-color: var(--pazza-dark-blue);
+  border-color: var(--pazza-dark-blue);
+}
+
+.thread-item:hover {
+  background-color: lightgrey;
+}
