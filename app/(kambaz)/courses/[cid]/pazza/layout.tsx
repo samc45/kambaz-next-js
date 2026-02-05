@@ -5,5 +5,17 @@ export default function PazzaLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="h-100">{children}</div>;
+  return (
+    <div className="d-flex justify-content-center">
+      <div
+        className="w-100"
+        style={{
+          maxWidth: "1200px", // tweak: 1200–1440px are reasonable
+          minHeight: "100vh",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
 }

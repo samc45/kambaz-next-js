@@ -12,7 +12,7 @@ export default function PazzaPage() {
           <PazzaSidebar />
         </div>
 
-        <div className="flex-grow-1 overflow-auto p-3">
+        <div className="flex-grow-1 overflow-auto p-3" style={{ background: "#eaeef4" }}>
           <ClassGlance />
         </div>
       </div>

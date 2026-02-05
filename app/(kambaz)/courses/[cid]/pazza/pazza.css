@@ -38,3 +38,8 @@ body {
 .thread-item:hover {
   background-color: lightgrey;
 }
+
+.header-opt-active {
+  text-decoration: underline;
+  font-weight: bold
+}

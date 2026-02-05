@@ -45,8 +45,8 @@ export default function ThreadItem({
             ? (
               <>
                 {subtitle.slice(0, 40)}
-                {subtitle.slice(40, 75)}
-                {subtitle.length > 115 && "..."}
+                {subtitle.slice(40, 70)}
+                {subtitle.length > 110 && "..."}
               </>
             )
             : (
@@ -67,8 +67,8 @@ export default function ThreadItem({
           </div>
         )}
       </div>
-      <div className="d-flex flex-column align-items-end w-25">
-        <div className="d-flex text-muted small ms-2">
+      <div className="d-flex flex-column align-items-end w-100">
+        <div className="d-flex text-muted small ms-2 w-100 justify-content-end" style={{ fontSize: "12px" }}>
           {time}
         </div>
         {instructorAnswered && (
