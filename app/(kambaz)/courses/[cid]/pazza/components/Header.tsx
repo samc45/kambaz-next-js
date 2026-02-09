@@ -1,18 +1,14 @@
 import { FaRegUserCircle } from "react-icons/fa";
-import { FaFolder } from "react-icons/fa6";
 import { MdForum } from "react-icons/md";
+import FolderFilters from "./FolderFilters";
 
-export default function PazzaHeader() {
+interface PazzaHeaderProps {
+  userName: string;
+  isInstructor: boolean;
+  courseName: string;
+}
 
-  const folder = (name: string) => (
-    <span
-      className="d-inline-flex align-items-center text-pazza-gray fs-6 fw-light me-4 text-nowrap"
-      style={{ cursor: "pointer" }}
-    >
-      <FaFolder className="me-1" style={{ color: "#6790b4" }} />
-      {name}
-    </span>
-  );
+export default function PazzaHeader({ userName, isInstructor, courseName }: PazzaHeaderProps) {
 
   return (
     <>
@@ -23,39 +19,23 @@ export default function PazzaHeader() {
             pazza
           </strong>
 
+          <strong className="small">
+            {courseName}
+          </strong>
+
           <div className="d-flex gap-3 small">
             <span className="header-opt-active" role="button">Q&amp;A</span>
-            <span role="button">Manage Class</span>
+            {isInstructor && <span role="button">Manage Class</span>}
           </div>
 
           <span className="fs-6">
             <FaRegUserCircle className="fs-5 mb-1 me-1" />
-            John Smith
+            {userName}
           </span>
         </div>
       </div>
 
-      <div
-        className="d-flex align-items-center"
-        style={{ backgroundColor: "#e8e8ea", height: "28px" }}
-      >
-        <span className="text-pazza-gray px-3 text-nowrap">
-          Filter by Folder:
-        </span>
-
-        <div
-          className="flex-grow-1 overflow-auto"
-          style={{
-            whiteSpace: "nowrap",
-          }}
-        >
-          {[
-            "office_hours", "hw1", "hw2", "hw3", "hw4", "hw5",
-            "hw6", "hw7", "hw8", "hw9", "hw10", "hw11", "hw12", "hw13",
-          ].map(folder)}
-        </div>
-      </div>
-
+      <FolderFilters />
     </>
   );
 }

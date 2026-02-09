@@ -1,19 +1,26 @@
+"use client";
+
 import PazzaHeader from "./components/Header";
-import PazzaSidebar from "./components/Sidebar";
 import ClassGlance from "./components/ClassGlance";
+import ListOfPostsSidebar from "./components/ListOfPostsSidebar";
+import NewPostScreen from "./components/NewPostScreen";
 
 export default function PazzaPage() {
+
   return (
     <div className="d-flex flex-column vh-100 bg-light">
-      <PazzaHeader />
+      <PazzaHeader
+        userName="John Smith"
+        isInstructor={true}
+        courseName="CS4550: Web Dev"
+      />
 
       <div className="d-flex flex-grow-1 overflow-hidden">
-        <div className="border-end bg-white" style={{ width: "300px" }}>
-          <PazzaSidebar />
-        </div>
+        <ListOfPostsSidebar />
 
-        <div className="flex-grow-1 overflow-auto p-3" style={{ background: "#eaeef4" }}>
-          <ClassGlance />
+        <div className="flex-grow-1 overflow-auto" style={{ background: "#eaeef4" }}>
+          {/* <ClassGlance /> */}
+          <NewPostScreen />
         </div>
       </div>
     </div>

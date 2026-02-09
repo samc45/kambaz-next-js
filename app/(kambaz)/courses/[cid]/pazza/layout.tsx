@@ -10,7 +10,7 @@ export default function PazzaLayout({
       <div
         className="w-100"
         style={{
-          maxWidth: "1200px", // tweak: 1200–1440px are reasonable
+          maxWidth: "1200px",
           minHeight: "100vh",
         }}
       >

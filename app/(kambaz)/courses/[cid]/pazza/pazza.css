@@ -41,5 +41,15 @@ body {
 
 .header-opt-active {
   text-decoration: underline;
-  font-weight: bold
+  font-weight: bold;
+}
+
+.new-post-folder-not-selected {
+  background: #cddeec !important;
+  color: #557fa1;
+}
+
+.new-post-folder-selected {
+  background: var(--pazza-blue) !important;
+  color: white;
 }

@@ -1,6 +1,5 @@
 import { Badge } from "react-bootstrap";
 import { FaInfo, FaSquare } from "react-icons/fa6";
-import { PiChalkboardTeacherFill } from "react-icons/pi";
 
 export default function ThreadItem({
   title,
@@ -9,7 +8,6 @@ export default function ThreadItem({
   instructorPosted,
   instructorEndorses,
   instructorAnswered,
-  pinned,
 }: {
   title: string;
   subtitle: string;
@@ -17,7 +15,6 @@ export default function ThreadItem({
   instructorPosted?: boolean;
   instructorEndorses?: boolean;
   instructorAnswered?: boolean;
-  pinned?: boolean;
 }) {
   return (
     <div className="thread-item d-flex flex-row px-2 py-2 border-bottom justify-content-between w-100"
@@ -40,13 +37,15 @@ export default function ThreadItem({
             title
           )}
         </div>
-        <div className="text-muted small" style={{ fontSize: "13px" }}>
+        <div className="text-muted small" style={{ fontSize: "13px", lineHeight: "1.2em" }}>
           {subtitle.length > 40
             ? (
               <>
                 {subtitle.slice(0, 40)}
                 {subtitle.slice(40, 70)}
-                {subtitle.length > 110 && "..."}
+                {subtitle.slice(70, 110)}
+                {subtitle.slice(110, 150)}
+                {subtitle.length > 150 && "..."}
               </>
             )
             : (
@@ -59,11 +58,6 @@ export default function ThreadItem({
         {instructorEndorses && (
           <div className="text-success small mt-1 text-nowrap" style={{ fontSize: "12px" }}>
             An instructor thinks this is a good question
-          </div>
-        )}
-        {pinned && (
-          <div className="text-danger small mt-1" style={{ fontSize: "12px" }}>
-            Pinned
           </div>
         )}
       </div>
