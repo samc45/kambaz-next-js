@@ -3,12 +3,16 @@
 import { useState } from "react";
 import { Button, Card, Form, FormControl, FormGroup, FormLabel, Table } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
-import { FaCalendarAlt } from "react-icons/fa";
+
+import * as db from '../../../../database';
+import { useParams } from "next/navigation";
 
 export default function AssignmentEditor() {
+  const params = useParams();
 
-  const [description, setDescription] = useState('The assignment is available online Submit a link to the landing page of the assignment.');
+  const assignment = db.assignments.find(a => a._id === params.aid);
 
+  const [description, setDescription] = useState(assignment?.description || '');
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
   };
@@ -19,7 +23,7 @@ export default function AssignmentEditor() {
 
         <FormGroup>
           <FormLabel>Assignment Name</FormLabel>
-          <FormControl className="form-control" id="wd-name" defaultValue="A1 - ENV + HTML" />
+          <FormControl className="form-control" id="wd-name" defaultValue={assignment?.title || ''} />
         </FormGroup>
 
         <FormGroup className="mt-4">
@@ -40,7 +44,7 @@ export default function AssignmentEditor() {
                 <label htmlFor="wd-points">Points</label>
               </td>
               <td>
-                <FormControl type="number" className="form-control" id="wd-points" defaultValue={100} />
+                <FormControl type="number" className="form-control" id="wd-points" defaultValue={assignment?.points || 0} />
               </td>
             </tr>
             <tr>
@@ -139,7 +143,7 @@ export default function AssignmentEditor() {
                         <Form.Control
                           type="date"
                           id="wd-due-date"
-                          defaultValue={new Date().toISOString().split('T')[0]}
+                          defaultValue={assignment ? new Date(assignment.due).toISOString().split('T')[0] : ''}
                         />
                       </InputGroup>
                     </div>
@@ -152,7 +156,7 @@ export default function AssignmentEditor() {
                           <Form.Control
                             type="date"
                             id="wd-available-from"
-                            defaultValue={new Date().toISOString().split('T')[0]}
+                            defaultValue={assignment ? new Date(assignment.available).toISOString().split('T')[0] : ''}
                           />
                         </InputGroup>
                       </div>
@@ -164,7 +168,7 @@ export default function AssignmentEditor() {
                           <Form.Control
                             type="date"
                             id="wd-available-until"
-                            defaultValue={new Date().toISOString().split('T')[0]}
+                            defaultValue={""}
                           />
                         </InputGroup>
                       </div>

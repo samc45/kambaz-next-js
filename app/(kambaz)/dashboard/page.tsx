@@ -7,21 +7,25 @@ import CardText from "react-bootstrap/esm/CardText";
 import CardTitle from "react-bootstrap/esm/CardTitle";
 import CardImg from "react-bootstrap/esm/CardImg";
 import { TfiWrite } from "react-icons/tfi";
+import * as db from "../database";
 
-
-// Temporary representation of a course, to easily show 7
 interface Course {
-  id: string;
-  title: string;
+  _id: string;
+  name: string;
+  number: string;
+  startDate: string;
+  endDate: string;
+  department: string;
+  credits: number;
   description: string;
-  imageUrl: string;
+  image: string;
 }
 
 function CourseCard({ course }: { course: Course }) {
   return (
     <Col className="wd-dashboard-course">
       <Card>
-        <Link href={`/courses/${course.id}/home`}
+        <Link href={`/courses/${course._id}/home`}
           className="wd-dashboard-course-link text-decoration-none text-dark position-relative">
           <div className="overflow-hidden" style={{
             position: "relative",
@@ -30,7 +34,7 @@ function CourseCard({ course }: { course: Course }) {
           }}>
             <CardImg
               variant="top"
-              src={course.imageUrl}
+              src={course.image}
               width="100%"
               height="100%"
               style={{ objectFit: "cover" }}
@@ -47,9 +51,9 @@ function CourseCard({ course }: { course: Course }) {
             />
           </div>
           <CardBody>
-            <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden fw-bold">{course.title}</CardTitle>
+            <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden fw-bold">{course.name}</CardTitle>
             <CardText className="wd-dashboard-course-description overflow-hidden h-fit fw-light">
-              {course.description}
+              {course.description.substring(0, 70)}...
             </CardText>
             <TfiWrite />
           </CardBody>
@@ -60,52 +64,7 @@ function CourseCard({ course }: { course: Course }) {
 }
 
 export default function Dashboard() {
-
-  const courses: Course[] = [
-    {
-      id: "1234",
-      title: "CS1234 React JS",
-      description: "Frontend Development",
-      imageUrl: "/images/reactjs.png"
-    },
-    {
-      id: "5678",
-      title: "CS5678 Next JS",
-      description: "Frontend Development",
-      imageUrl: "/images/nextjs.png"
-    },
-    {
-      id: "9101",
-      title: "CS9101 Node JS",
-      description: "Backend Development",
-      imageUrl: "/images/nodejs.png"
-    },
-    {
-      id: "2131",
-      title: "CS2131 Tailwind CSS",
-      description: "Frontend Development",
-      imageUrl: "/images/tailwind.png"
-    },
-    {
-      id: "4151",
-      title: "CS4156 Golang Backend",
-      description: "Backend Development",
-      imageUrl: "/images/golang.png"
-    },
-    {
-      id: "6171",
-      title: "CS6171 Serverless Framework",
-      description: "Cloud Development",
-      imageUrl: "/images/serverless.png"
-    },
-    {
-      id: "8192",
-      title: "CS8192 Native Web Apps",
-      description: "Full Stack Development",
-      imageUrl: "/images/native-apps.png"
-    }
-  ];
-
+  const courses = db.courses;
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title" className="fw-light">Dashboard</h1>
@@ -116,7 +75,7 @@ export default function Dashboard() {
         <div id="wd-dashboard-courses">
           <Row xs={1} md={3} lg={4} className="g-4">
             {courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
+              <CourseCard key={course._id} course={course} />
             ))}
           </Row>
         </div>
