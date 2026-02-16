@@ -2,7 +2,19 @@
 
 import { useState } from "react";
 import { Form, Button, Badge } from "react-bootstrap";
-import DetailsTextArea from "./DetailsTextArea";
+import RichTextEditor from "./RichTextEditor";
+import FolderPill from "./FolderPill";
+
+type FieldErrorProps = { message?: string };
+
+function FieldError({ message }: FieldErrorProps) {
+  if (!message) return null;
+  return (
+    <div className="text-danger fst-italic small mt-1">
+      {message}
+    </div>
+  );
+}
 
 export default function NewPostScreen({ onClose }: { onClose?: () => void }) {
   const [postType, setPostType] = useState<"question" | "note">("question");
@@ -43,7 +55,7 @@ export default function NewPostScreen({ onClose }: { onClose?: () => void }) {
       <Form.Group className="mb-3">
         <Form.Label className="fw-bold">Post Type</Form.Label>
         <div className="d-flex gap-3">
-          <div>
+          <div className={postType === "question" ? "new-post-radio-selected" : ""}>
             <Form.Check
               type="radio"
               id="type-question"
@@ -57,7 +69,7 @@ export default function NewPostScreen({ onClose }: { onClose?: () => void }) {
               onChange={() => setPostType("question")}
             />
           </div>
-          <div>
+          <div className={postType === "note" ? "new-post-radio-selected" : ""}>
             <Form.Check
               type="radio"
               id="type-note"
@@ -97,24 +109,16 @@ export default function NewPostScreen({ onClose }: { onClose?: () => void }) {
       <Form.Group className="mb-3">
         <Form.Label className="fw-semibold">Select Folder(s)</Form.Label>
         <div className="d-flex flex-wrap gap-2 mb-2">
-          {folders.map((folder) => (
-            <Badge
+          {folders.map((folder) =>
+            <FolderPill
               key={folder}
-              className={
-                selectedFolders.includes(folder)
-                  ? "new-post-folder-selected"
-                  : "new-post-folder-not-selected"
-              }
-              style={{
-                cursor: "pointer",
-                fontWeight: "normal"
-              }}
-              onClick={() => toggleFolder(folder)}
-            >
-              {folder}
-            </Badge>
-          ))}
+              name={folder}
+              selected={selectedFolders.includes(folder)}
+              onClick={toggleFolder}
+            />
+          )}
         </div>
+        <FieldError message="Please select at least one folder." />
         <a href="#" className="text-primary fw-medium small">
           Manage and reorder folders
         </a>
@@ -129,17 +133,19 @@ export default function NewPostScreen({ onClose }: { onClose?: () => void }) {
           onChange={(e) => setSummary(e.target.value)}
           maxLength={100}
         />
+        <FieldError message="Please enter a summary. Max 100 characters." />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label className="fw-semibold d-flex justify-content-between align-items-center">
           <span>Details</span>
         </Form.Label>
-
-        <DetailsTextArea
+        <RichTextEditor
           value={details}
           onChange={(value: string) => setDetails(value)}
         />
+        <FieldError message="Please enter the details of your post. Max 500 characters." />
+
       </Form.Group>
 
       <div className="d-flex gap-2">

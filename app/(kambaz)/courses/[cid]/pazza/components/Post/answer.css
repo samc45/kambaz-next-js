@@ -1,0 +1,36 @@
+.pazza-answer-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e3e6ea;
+  border-left: 4px solid #f0ad4e;
+  background: #f9f9f9;
+  padding: 8px 10px;
+  border-radius: 3px;
+}
+
+.pazza-answer-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+}
+
+.pazza-answer-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.pazza-answer-subtitle {
+  font-weight: 400;
+  font-size: 12px;
+  color: #6c757d;
+  margin-left: 6px;
+}
+
+.pazza-answer-footer {
+  border-top: 1px solid #e3e6ea;
+  margin-top: 6px;
+  padding-top: 6px;
+  font-size: 12px;
+  color: #6c757d;
+}

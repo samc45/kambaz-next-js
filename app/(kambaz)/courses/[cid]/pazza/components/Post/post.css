@@ -1,0 +1,20 @@
+.pazza-post {
+  background: #fff;
+  border: 1px solid #e3e6ea;
+  border-radius: 4px;
+  padding: 16px 18px;
+}
+
+.pazza-question-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #c62828;
+  color: #fff;
+  border-radius: 2px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+}

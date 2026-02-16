@@ -53,3 +53,9 @@ body {
   background: var(--pazza-blue) !important;
   color: white;
 }
+
+.new-post-radio-selected {
+  background-color: #cddeec !important;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
