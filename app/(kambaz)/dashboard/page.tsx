@@ -1,3 +1,6 @@
+"use client"
+import { useState } from "react";
+
 import Link from "next/link";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
@@ -61,50 +64,7 @@ function CourseCard({ course }: { course: Course }) {
 
 export default function Dashboard() {
 
-  const courses: Course[] = [
-    {
-      id: "1234",
-      title: "CS1234 React JS",
-      description: "Frontend Development",
-      imageUrl: "/images/reactjs.png"
-    },
-    {
-      id: "5678",
-      title: "CS5678 Next JS",
-      description: "Frontend Development",
-      imageUrl: "/images/nextjs.png"
-    },
-    {
-      id: "9101",
-      title: "CS9101 Node JS",
-      description: "Backend Development",
-      imageUrl: "/images/nodejs.png"
-    },
-    {
-      id: "2131",
-      title: "CS2131 Tailwind CSS",
-      description: "Frontend Development",
-      imageUrl: "/images/tailwind.png"
-    },
-    {
-      id: "4151",
-      title: "CS4156 Golang Backend",
-      description: "Backend Development",
-      imageUrl: "/images/golang.png"
-    },
-    {
-      id: "6171",
-      title: "CS6171 Serverless Framework",
-      description: "Cloud Development",
-      imageUrl: "/images/serverless.png"
-    },
-    {
-      id: "8192",
-      title: "CS8192 Native Web Apps",
-      description: "Full Stack Development",
-      imageUrl: "/images/native-apps.png"
-    }
-  ];
+  const [courses, setCourses] = useState<any[]>(db.courses);
 
   return (
     <div id="wd-dashboard">
