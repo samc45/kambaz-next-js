@@ -8,11 +8,14 @@ import AssignmentsControlButtons from "./AssignmentsControlButtons";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { TfiWrite } from "react-icons/tfi";
 
+import * as db from '../../../database';
+
 type AssignmentRowProps = {
-  id: number;
+  _id: string;
   title: string;
-  dueDate: string;
-  availableDate: string;
+  course: string;
+  due: string;
+  available: string;
   points: number;
 };
 
@@ -21,7 +24,7 @@ function AssignmentRow(props: AssignmentRowProps) {
     <div
       className="d-flex align-items-center justify-content-between px-3 py-2"
       style={{ cursor: "pointer" }}
-      onClick={() => window.location.href = `${window.location.pathname}/${props.id}`}
+      onClick={() => window.location.href = `${window.location.pathname}/${props._id}`}
     >
       <div className="d-flex align-items-center gap-3">
         <BsGripVertical className="me-2 flex-shrink-0" />
@@ -31,9 +34,9 @@ function AssignmentRow(props: AssignmentRowProps) {
           <div className="d-flex flex-wrap gap-2 small text-muted">
             <span className="text-danger">Multiple Modules</span>
             <span>|</span>
-            <span>Not available until {props.availableDate}</span>
+            <span>Not available until {new Date(props.available).toLocaleDateString()}</span>
             <span>|</span>
-            <span>Due {props.dueDate}</span>
+            <span>Due {new Date(props.due).toLocaleDateString()}</span>
             <span>|</span>
             <span>{props.points} pts</span>
           </div>
@@ -44,32 +47,10 @@ function AssignmentRow(props: AssignmentRowProps) {
   );
 }
 
-const assignments: AssignmentRowProps[] = [
-  {
-    id: 1,
-    title: "A1",
-    dueDate: "May 13 at 11:59pm",
-    availableDate: "May 6 at 12:00am",
-    points: 100
-  },
-  {
-    id: 2,
-    title: "A2",
-    dueDate: "May 20 at 11:59pm",
-    availableDate: "May 8 at 12:00am",
-    points: 100
-  },
-  {
-    id: 3,
-    title: "A3",
-    dueDate: "May 24 at 11:59pm",
-    availableDate: "May 10 at 12:00am",
-    points: 100
-  },
-];
-
-
 export default function Assignments() {
+
+  const assignments = db.assignments;
+
   return (
     <div id="wd-assignments">
       <div className="d-flex flex-wrap justify-content-between mb-4 align-items-center">

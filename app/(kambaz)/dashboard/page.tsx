@@ -10,21 +10,25 @@ import CardText from "react-bootstrap/esm/CardText";
 import CardTitle from "react-bootstrap/esm/CardTitle";
 import CardImg from "react-bootstrap/esm/CardImg";
 import { TfiWrite } from "react-icons/tfi";
+import * as db from "../database";
 
-
-// Temporary representation of a course, to easily show 7
 interface Course {
-  id: string;
-  title: string;
+  _id: string;
+  name: string;
+  number: string;
+  startDate: string;
+  endDate: string;
+  department: string;
+  credits: number;
   description: string;
-  imageUrl: string;
+  image: string;
 }
 
 function CourseCard({ course }: { course: Course }) {
   return (
     <Col className="wd-dashboard-course">
       <Card>
-        <Link href={`/courses/${course.id}/home`}
+        <Link href={`/courses/${course._id}/home`}
           className="wd-dashboard-course-link text-decoration-none text-dark position-relative">
           <div className="overflow-hidden" style={{
             position: "relative",
@@ -33,7 +37,7 @@ function CourseCard({ course }: { course: Course }) {
           }}>
             <CardImg
               variant="top"
-              src={course.imageUrl}
+              src={course.image}
               width="100%"
               height="100%"
               style={{ objectFit: "cover" }}
@@ -50,9 +54,9 @@ function CourseCard({ course }: { course: Course }) {
             />
           </div>
           <CardBody>
-            <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden fw-bold">{course.title}</CardTitle>
+            <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden fw-bold">{course.name}</CardTitle>
             <CardText className="wd-dashboard-course-description overflow-hidden h-fit fw-light">
-              {course.description}
+              {course.description.substring(0, 70)}...
             </CardText>
             <TfiWrite />
           </CardBody>
@@ -76,7 +80,7 @@ export default function Dashboard() {
         <div id="wd-dashboard-courses">
           <Row xs={1} md={3} lg={4} className="g-4">
             {courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
+              <CourseCard key={course._id} course={course} />
             ))}
           </Row>
         </div>
