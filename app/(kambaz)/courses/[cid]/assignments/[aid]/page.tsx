@@ -1,16 +1,94 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Form, FormControl, FormGroup, FormLabel, Table } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
-import { FaCalendarAlt } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../store";
+import { addAssignment, deleteAssignment, updateAssignment, Assignment } from "../reducer";
+import { useParams, useRouter } from "next/navigation";
 
 export default function AssignmentEditor() {
+  const params = useParams();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-  const [description, setDescription] = useState('The assignment is available online Submit a link to the landing page of the assignment.');
+  const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+  const isFaculty = currentUser?.role === "FACULTY";
 
-  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(event.target.value);
+  const cid = (Array.isArray(params.cid) ? params.cid[0] : params.cid) || "";
+  const aid = (Array.isArray(params.aid) ? params.aid[0] : params.aid) || "";
+  const isNewAssignment = aid === "new";
+
+  const assignment = useMemo(
+    () => assignments.find((a) => a._id === aid && a.course === cid),
+    [assignments, aid, cid]
+  );
+
+  const [editedAssignment, setEditedAssignment] = useState<Assignment>({
+    _id: aid,
+    course: cid,
+    title: "",
+    description: "",
+    points: 100,
+    due: "",
+    available: "",
+  });
+
+  useEffect(() => {
+    if (!isNewAssignment && assignment) {
+      // update state with existing assignment details
+      setEditedAssignment(assignment);
+      return;
+    }
+
+    // if its a new assignment then set default values for available and due dates
+    if (isNewAssignment) {
+      const today = new Date().toISOString().split("T")[0];
+      setEditedAssignment({
+        _id: "new",
+        course: cid,
+        title: "",
+        description: "",
+        points: 100,
+        due: today,
+        available: today,
+      });
+    }
+  }, [assignment, cid, isNewAssignment]);
+
+  useEffect(() => {
+    // Only allow faculty to access this page since students can just view
+    if (!isFaculty) {
+      router.replace(`/courses/${cid}/assignments`);
+    }
+  }, [cid, isFaculty, isNewAssignment, router]);
+
+  const onCancel = () => {
+    // Navigate back to assignments list
+    router.push(`/courses/${cid}/assignments`);
+  };
+
+  const onSave = () => {
+    const assignmentToSave: Assignment = {
+      ...editedAssignment,
+      course: cid,
+      points: Number(editedAssignment.points),
+    };
+
+    if (isNewAssignment) {
+      dispatch(addAssignment(assignmentToSave));
+    } else {
+      dispatch(updateAssignment(assignmentToSave));
+    }
+    router.push(`/courses/${cid}/assignments`);
+  };
+
+  const onDelete = () => {
+    if (isNewAssignment || !assignment) return;
+    dispatch(deleteAssignment(assignment._id));
+    router.push(`/courses/${cid}/assignments`);
   };
 
   return (
@@ -19,17 +97,22 @@ export default function AssignmentEditor() {
 
         <FormGroup>
           <FormLabel>Assignment Name</FormLabel>
-          <FormControl className="form-control" id="wd-name" defaultValue="A1 - ENV + HTML" />
+          <FormControl
+            className="form-control"
+            id="wd-name"
+            value={editedAssignment.title}
+            onChange={(e) => setEditedAssignment({ ...editedAssignment, title: e.target.value })}
+          />
         </FormGroup>
 
         <FormGroup className="mt-4">
           <FormControl
             as="textarea"
             id="wd-description"
-            onChange={handleDescriptionChange}
+            onChange={(e) => setEditedAssignment({ ...editedAssignment, description: e.target.value })}
             rows={10}
             cols={50}
-            value={description}
+            value={editedAssignment.description}
           />
         </FormGroup>
         <br />
@@ -40,7 +123,18 @@ export default function AssignmentEditor() {
                 <label htmlFor="wd-points">Points</label>
               </td>
               <td>
-                <FormControl type="number" className="form-control" id="wd-points" defaultValue={100} />
+                <FormControl
+                  type="number"
+                  className="form-control"
+                  id="wd-points"
+                  value={editedAssignment.points}
+                  onChange={(e) =>
+                    setEditedAssignment({
+                      ...editedAssignment,
+                      points: Number(e.target.value),
+                    })
+                  }
+                />
               </td>
             </tr>
             <tr>
@@ -139,7 +233,10 @@ export default function AssignmentEditor() {
                         <Form.Control
                           type="date"
                           id="wd-due-date"
-                          defaultValue={new Date().toISOString().split('T')[0]}
+                          value={editedAssignment.due}
+                          onChange={(e) =>
+                            setEditedAssignment({ ...editedAssignment, due: e.target.value })
+                          }
                         />
                       </InputGroup>
                     </div>
@@ -152,7 +249,10 @@ export default function AssignmentEditor() {
                           <Form.Control
                             type="date"
                             id="wd-available-from"
-                            defaultValue={new Date().toISOString().split('T')[0]}
+                            value={editedAssignment.available}
+                            onChange={(e) =>
+                              setEditedAssignment({ ...editedAssignment, available: e.target.value })
+                            }
                           />
                         </InputGroup>
                       </div>
@@ -164,7 +264,10 @@ export default function AssignmentEditor() {
                           <Form.Control
                             type="date"
                             id="wd-available-until"
-                            defaultValue={new Date().toISOString().split('T')[0]}
+                            value={editedAssignment.due}
+                            onChange={(e) =>
+                              setEditedAssignment({ ...editedAssignment, due: e.target.value })
+                            }
                           />
                         </InputGroup>
                       </div>
@@ -177,10 +280,33 @@ export default function AssignmentEditor() {
         </Table>
         <hr />
         <div className="d-flex flex-row gap-2 justify-content-end">
-          <Button variant="secondary" size="lg" className="d-flex align-items-center me-2 fw-light">
+          {!isNewAssignment && (
+            <Button
+              variant="outline-danger"
+              size="lg"
+              className="d-flex align-items-center me-2 fw-light"
+              type="button"
+              onClick={onDelete}
+            >
+              Delete
+            </Button>
+          )}
+          <Button
+            variant="secondary"
+            size="lg"
+            className="d-flex align-items-center me-2 fw-light"
+            type="button"
+            onClick={onCancel}
+          >
             Cancel
           </Button>
-          <Button variant="danger" size="lg" className="d-flex align-items-center me-2 fw-light">
+          <Button
+            variant="danger"
+            size="lg"
+            className="d-flex align-items-center me-2 fw-light"
+            type="button"
+            onClick={onSave}
+          >
             Save
           </Button>
         </div>
