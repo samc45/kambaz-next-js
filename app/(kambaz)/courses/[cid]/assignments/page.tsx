@@ -7,8 +7,10 @@ import { PiPlusThin } from "react-icons/pi";
 import AssignmentsControlButtons from "./AssignmentsControlButtons";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { TfiWrite } from "react-icons/tfi";
-
-import * as db from '../../../database';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store";
+import { useParams, useRouter } from "next/navigation";
+import { deleteAssignment } from "./reducer";
 
 type AssignmentRowProps = {
   _id: string;
@@ -17,6 +19,9 @@ type AssignmentRowProps = {
   due: string;
   available: string;
   points: number;
+  isFaculty: boolean;
+  onEdit: (assignmentId: string) => void;
+  onDelete: (assignmentId: string) => void;
 };
 
 function AssignmentRow(props: AssignmentRowProps) {
@@ -24,7 +29,7 @@ function AssignmentRow(props: AssignmentRowProps) {
     <div
       className="d-flex align-items-center justify-content-between px-3 py-2"
       style={{ cursor: "pointer" }}
-      onClick={() => window.location.href = `${window.location.pathname}/${props._id}`}
+      onClick={() => props.onEdit(props._id)}
     >
       <div className="d-flex align-items-center gap-3">
         <BsGripVertical className="me-2 flex-shrink-0" />
@@ -42,14 +47,36 @@ function AssignmentRow(props: AssignmentRowProps) {
           </div>
         </div>
       </div>
-      <AssignmentControlButtons />
+      <AssignmentControlButtons
+        isFaculty={props.isFaculty}
+        onEdit={() => props.onEdit(props._id)}
+        onDelete={() => props.onDelete(props._id)}
+      />
     </div>
   );
 }
 
 export default function Assignments() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { cid } = useParams();
+  const courseId = Array.isArray(cid) ? cid[0] : cid;
+  const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+  const isFaculty = currentUser?.role === "FACULTY";
 
-  const assignments = db.assignments;
+  const courseAssignments = assignments.filter((assignment) => assignment.course === courseId);
+
+  const goToAssignmentEditor = (assignmentId: string) => {
+    router.push(`/courses/${courseId}/assignments/${assignmentId}`);
+  };
+
+  const removeAssignment = (assignmentId: string) => {
+    if (!isFaculty) return;
+    const shouldDelete = window.confirm("Are you sure you want to remove this assignment?");
+    if (!shouldDelete) return;
+    dispatch(deleteAssignment(assignmentId));
+  };
 
   return (
     <div id="wd-assignments">
@@ -68,27 +95,40 @@ export default function Assignments() {
             />
           </InputGroup>
         </div>
-        <div className="d-flex align-items-center gap-2">
-          <Button variant="secondary" size="lg" className="me-1 float-end fw-light" id="wd-add-group-btn">
-            <PiPlusThin className="me-2 mb-1" />
-            Group
-          </Button>
-          <Button variant="danger" size="lg" className="d-flex align-items-center me-2 fw-light" id="wd-add-assignment-btn">
-            <PiPlusThin className="me-2" />
-            Assignment
-          </Button>
-        </div>
+        {isFaculty && (
+          <div className="d-flex align-items-center gap-2">
+            <Button variant="secondary" size="lg" className="me-1 float-end fw-light" id="wd-add-group-btn">
+              <PiPlusThin className="me-2 mb-1" />
+              Group
+            </Button>
+            <Button
+              variant="danger"
+              size="lg"
+              className="d-flex align-items-center me-2 fw-light"
+              id="wd-add-assignment-btn"
+              onClick={() => goToAssignmentEditor("new")}
+            >
+              <PiPlusThin className="me-2" />
+              Assignment
+            </Button>
+          </div>
+        )}
       </div>
 
       <ListGroup className="rounded-0" id="wd-modules">
         <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
           <div className="wd-title p-3 ps-2 bg-secondary fw-bold">
-            <BsGripVertical className="me-2 fs-3" /> ASSIGNMENTS <AssignmentsControlButtons />
+            <BsGripVertical className="me-2 fs-3" /> ASSIGNMENTS <AssignmentsControlButtons isFaculty={isFaculty} />
           </div>
           <ListGroup className="wd-lessons rounded-0">
-            {assignments.map((assignment) => (
-              <ListGroupItem key={assignment.title} className="wd-lesson p-3 ps-1">
-                <AssignmentRow {...assignment} />
+            {courseAssignments.map((assignment) => (
+              <ListGroupItem key={assignment._id} className="wd-lesson p-3 ps-1">
+                <AssignmentRow
+                  {...assignment}
+                  isFaculty={isFaculty}
+                  onEdit={goToAssignmentEditor}
+                  onDelete={removeAssignment}
+                />
               </ListGroupItem>
             ))}
           </ListGroup>
