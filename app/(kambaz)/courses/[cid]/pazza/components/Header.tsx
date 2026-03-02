@@ -1,14 +1,22 @@
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdForum } from "react-icons/md";
 import FolderFilters from "./FolderFilters";
+import React from "react";
 
 interface PazzaHeaderProps {
   userName: string;
   isInstructor: boolean;
   courseName: string;
+  togglePageView: (page: string) => void;
 }
 
-export default function PazzaHeader({ userName, isInstructor, courseName }: PazzaHeaderProps) {
+export default function PazzaHeader({ userName, isInstructor, courseName, togglePageView }: PazzaHeaderProps) {
+  const [page, setPage] = React.useState('qa');
+
+  const onPageChange = (pageName: string) => {
+    setPage(pageName);
+    togglePageView(pageName);
+  }
 
   return (
     <>
@@ -24,8 +32,20 @@ export default function PazzaHeader({ userName, isInstructor, courseName }: Pazz
           </strong>
 
           <div className="d-flex gap-3 small">
-            <span className="header-opt-active" role="button">Q&amp;A</span>
-            {isInstructor && <span role="button">Manage Class</span>}
+            <span
+              className={page === "qa" ? "header-opt-active" : ""}
+              role="button"
+              onClick={() => onPageChange('qa')}>
+              Q&amp;A
+            </span>
+            {isInstructor &&
+              <span
+                className={page === "manage" ? "header-opt-active" : ""}
+                role="button" onClick={() =>
+                  onPageChange('manage')}>
+                Manage Class
+              </span>
+            }
           </div>
 
           <span className="fs-6">
@@ -34,8 +54,6 @@ export default function PazzaHeader({ userName, isInstructor, courseName }: Pazz
           </span>
         </div>
       </div>
-
-      <FolderFilters />
     </>
   );
 }

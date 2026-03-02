@@ -1,7 +1,8 @@
+import { Post } from "../types";
 import StatRow from "./StatRow";
 import StatusRow from "./StatusRow";
 
-export default function ClassAtAGlance() {
+export default function ClassAtAGlance(posts: Post[]) {
   return (
     <div className="border rounded bg-light">
       <div className="px-3 py-2 border-bottom d-flex justify-content-between align-items-center">
@@ -14,7 +15,7 @@ export default function ClassAtAGlance() {
             <StatusRow type="warning" text="2 unanswered questions" />
           </div>
           <div className="col-md-6">
-            <StatRow label="total posts" value="27" />
+            <StatRow label="total posts" value={`${posts.length}`} />
             <StatRow label="instructors' responses" value="5" />
             <StatRow label="students' responses" value="0" />
           </div>

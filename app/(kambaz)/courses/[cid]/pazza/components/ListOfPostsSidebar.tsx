@@ -6,9 +6,19 @@ import ThreadItem from "./ThreadItem";
 import SectionHeader from "./SectionHeader";
 import { RxTriangleLeft, RxTriangleRight } from "react-icons/rx";
 import React from "react";
+import { Post } from "../types";
 
-export default function ListOfPostsSidebar() {
+interface ListOfPostsSidebarProps {
+  posts: Post[];
+  selectedPost: Post | null;
+  onNewPostClick: () => void;
+}
 
+export default function ListOfPostsSidebar({
+  posts,
+  selectedPost,
+  onNewPostClick,
+}: ListOfPostsSidebarProps) {
   const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
 
   return (
@@ -39,6 +49,7 @@ export default function ListOfPostsSidebar() {
             <div className="d-flex align-items-center gap-2 mb-2">
               <button className="btn btn-primary btn-sm d-flex align-items-center"
                 style={{ height: "32px", whiteSpace: "nowrap" }}
+                onClick={onNewPostClick}
               >
                 <PiPlusCircleLight className="me-1 fs-6" />
                 New Post

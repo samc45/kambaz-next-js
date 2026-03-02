@@ -1,11 +1,14 @@
+.pazza-answer-box {
+  background: #fff;
+  border: 1px solid #e3e6ea;
+  border-radius: 4px;
+  padding: 16px 18px;
+}
+
 .pazza-answer-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid #e3e6ea;
-  border-left: 4px solid #f0ad4e;
-  background: #f9f9f9;
-  padding: 8px 10px;
   border-radius: 3px;
 }
 
@@ -13,6 +16,10 @@
   width: 22px;
   height: 22px;
   border-radius: 3px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pazza-answer-title {
@@ -33,4 +40,12 @@
   padding-top: 6px;
   font-size: 12px;
   color: #6c757d;
+}
+
+.pazza-textarea-smallest {
+  min-height: 0 !important;
+  height: 30px;
+  line-height: 1.2;
+  padding: 0.2rem 0.5rem;
+  resize: none;
 }

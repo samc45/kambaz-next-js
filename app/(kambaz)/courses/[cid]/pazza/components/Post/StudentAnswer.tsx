@@ -5,7 +5,7 @@ import { Button, Dropdown } from "react-bootstrap";
 import RichTextEditor from "../RichTextEditor";
 import { Answer } from "../../types";
 
-type InstructorAnswerProps = {
+type StudentAnswerProps = {
   isNewAnswer: boolean;
   answer: Answer;
   onChange: (value: string) => void;
@@ -13,21 +13,21 @@ type InstructorAnswerProps = {
   onCancel?: () => void;
 };
 
-export default function InstructorAnswer({
+export default function StudentAnswer({
   isNewAnswer,
   answer,
   onChange,
   onSubmit,
   onCancel,
-}: InstructorAnswerProps) {
+}: StudentAnswerProps) {
   return (
     <div className="pazza-answer-box bg-white mt-2">
       <div className="pazza-answer-header mt-2">
-        <div className="pazza-answer-icon" style={{ background: "#f0ad4e" }}>i</div>
+        <div className="pazza-answer-icon" style={{ background: "#8cc63f" }}>S</div>
         <div className="pazza-answer-title">
-          the instructors&apos; answer{" "}
+          students&apos; answer{" "}
           <span className="pazza-answer-subtitle">
-            where instructors collectively construct a single answer
+            where students collectively construct a single answer
           </span>
         </div>
       </div>
