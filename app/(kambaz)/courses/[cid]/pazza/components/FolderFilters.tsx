@@ -1,21 +1,32 @@
 import { FaFolder } from "react-icons/fa6";
+import { Folder } from "../types";
+import React from "react";
 
-export default function FolderFilters() {
+export default function FolderFilters({ foldersList, onFolderSelected }: { foldersList: Folder[], onFolderSelected: (folder: Folder | null) => void }) {
 
-  // fetch folders from backend
-  const foldersList = [
-    "office_hours", "hw1", "hw2", "hw3", "hw4", "hw5",
-    "hw6", "hw7", "hw8", "hw9", "hw10", "hw11", "hw12", "hw13",
-  ];
+  const [selectedFolderId, setSelectedFolderId] = React.useState<string | null>(null);
 
-  const folderOption = (name: string) => (
+  const handleFolderClick = (folder: Folder) => {
+    // if folder already selected, deselect it by calling onFolderSelected with null
+    if (selectedFolderId === folder.id) {
+      setSelectedFolderId(null);
+      onFolderSelected(null);
+    } else {
+      // else select the folder, add class
+      setSelectedFolderId(folder.id);
+      onFolderSelected(folder);
+    }
+  }
+
+  const folderOption = (folder: Folder) => (
     <span
-      key={name}
-      className="d-inline-flex align-items-center text-pazza-gray fs-6 fw-light me-4 text-nowrap"
+      key={folder.id}
+      className={`d-inline-flex align-items-center text-pazza-gray fs-6 fw-light me-4 text-nowrap ${selectedFolderId === folder.id ? "fw-bold" : ""}`}
       style={{ cursor: "pointer" }}
+      onClick={() => handleFolderClick(folder)}
     >
       <FaFolder className="me-1" style={{ color: "#6790b4" }} />
-      {name}
+      {folder.name}
     </span>
   );
 

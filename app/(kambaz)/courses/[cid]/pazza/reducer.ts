@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Post } from "./types";
+import { Folder, Post } from "./types";
 
 type PazzaState = {
   postsList: Post[];
-  foldersList: string[];
+  foldersList: Folder[];
   showInstructorView: boolean;
   selectedPost: Post | null;
   showNewPostForm: boolean;
@@ -48,16 +48,21 @@ const pazzaSlice = createSlice({
         state.selectedPost = null;
       }
     },
-    setFoldersList: (state, { payload }: PayloadAction<string[]>) => {
+    setFoldersList: (state, { payload }: PayloadAction<Folder[]>) => {
       state.foldersList = payload;
     },
-    addFolder: (state, { payload }: PayloadAction<string>) => {
-      if (!state.foldersList.includes(payload)) {
+    addFolder: (state, { payload }: PayloadAction<Folder>) => {
+      if (!state.foldersList.find(folder => folder.id === payload.id)) {
         state.foldersList.push(payload);
       }
     },
+    updateFolder: (state, { payload }: PayloadAction<Folder>) => {
+      state.foldersList = state.foldersList.map((folder) =>
+        folder.id === payload.id ? { ...folder, name: payload.name } : folder
+      );
+    },
     deleteFolder: (state, { payload }: PayloadAction<string>) => {
-      state.foldersList = state.foldersList.filter((folder) => folder !== payload);
+      state.foldersList = state.foldersList.filter((folder) => folder.id !== payload);
     },
     setShowInstructorView: (state, { payload }: PayloadAction<boolean>) => {
       state.showInstructorView = payload;
@@ -90,6 +95,7 @@ export const {
   deletePost,
   setFoldersList,
   addFolder,
+  updateFolder,
   deleteFolder,
   setShowInstructorView,
   setSelectedPost,

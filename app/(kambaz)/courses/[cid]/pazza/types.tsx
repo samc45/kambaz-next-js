@@ -8,7 +8,7 @@ export interface Post {
   title: string;
   author: string;
   body: string;
-  folders: string[];
+  folders: Folder[];
   answers?: Answer[];
 
   // metadata for visual indicators
@@ -50,4 +50,9 @@ export interface FollowUpDiscussion {
   updatedAt: string;
   resolved: boolean;
   replies: FollowUpReply[];
+}
+
+export interface Folder {
+  id: string;
+  name: string;
 }

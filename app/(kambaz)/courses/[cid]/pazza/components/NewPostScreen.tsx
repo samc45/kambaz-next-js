@@ -16,7 +16,7 @@ function FieldError({ message }: FieldErrorProps) {
   );
 }
 
-export default function NewPostScreen({ onClose }: { onClose?: () => void }) {
+export default function NewPostScreen({ onCancel }: { onCancel?: () => void }) {
   const [postType, setPostType] = useState<"question" | "note">("question");
   const [postTo, setPostTo] = useState<"entire-class" | "individual">("entire-class");
   const [selectedFolders, setSelectedFolders] = useState<string[]>([]);
@@ -47,7 +47,7 @@ export default function NewPostScreen({ onClose }: { onClose?: () => void }) {
   };
 
   const handleCancel = () => {
-    if (onClose) onClose();
+    if (onCancel) onCancel();
   };
 
   return (

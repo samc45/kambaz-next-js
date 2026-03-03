@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import ClassAtAGlance from '../ClassGlance';
 import ManageFoldersTab from './ManageFoldersTab';
 
 export default function ManageClassScreen() {
@@ -38,7 +37,6 @@ export default function ManageClassScreen() {
         ))}
       </div>
 
-      {/* Tab Content */}
       <div className="flex-1 p-4 bg-white">
         {activeTab === 'folders' && (
           <ManageFoldersTab />

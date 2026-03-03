@@ -8,6 +8,63 @@ import { RxTriangleLeft, RxTriangleRight } from "react-icons/rx";
 import React from "react";
 import { Post } from "../types";
 
+// Get start of day for a given date (00:00:00)
+function startOfDay(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+// Convert string to Date, with fallback to current date if invalid
+function toDate(value: string) {
+  const date = new Date(value);
+  if (!Number.isNaN(date.getTime())) return date;
+  return new Date();
+}
+
+// Check if two dates are on the same calendar day
+function isSameDay(left: Date, right: Date) {
+  return left.getFullYear() === right.getFullYear()
+    && left.getMonth() === right.getMonth()
+    && left.getDate() === right.getDate();
+}
+
+// Get Monday of the week for a given date to help format week ranges
+function getMonday(date: Date) {
+  const monday = new Date(date);
+  const day = monday.getDay();
+  const offset = day === 0 ? -6 : 1 - day;
+  monday.setDate(monday.getDate() + offset);
+  return startOfDay(monday);
+}
+
+// Get Sunday of the week for a given date to help format week ranges
+function getSunday(date: Date) {
+  const monday = getMonday(date);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  return sunday;
+}
+
+// Format week range as "MM/DD - MM/DD"
+function formatWeekRange(date: Date) {
+  const monday = getMonday(date);
+  const sunday = getSunday(date);
+  const start = `${monday.getMonth() + 1}/${monday.getDate()}`;
+  const end = `${sunday.getMonth() + 1}/${sunday.getDate()}`;
+  return `${start} - ${end}`;
+}
+
+function formatPostTime(postDate: Date, now: Date) {
+  const today = startOfDay(now);
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  if (isSameDay(postDate, today) || isSameDay(postDate, yesterday)) {
+    return postDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  return postDate.toLocaleDateString();
+}
+
 interface ListOfPostsSidebarProps {
   posts: Post[];
   selectedPost: Post | null;
@@ -16,10 +73,59 @@ interface ListOfPostsSidebarProps {
 
 export default function ListOfPostsSidebar({
   posts,
-  selectedPost,
   onNewPostClick,
 }: ListOfPostsSidebarProps) {
   const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
+
+  const groupedPosts = React.useMemo(() => {
+    const now = new Date();
+    const today = startOfDay(now);
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const lastWeekStart = new Date(today);
+    lastWeekStart.setDate(today.getDate() - 7);
+
+    const sortedPosts = [...posts].sort(
+      (left, right) => toDate(right.createdAt).getTime() - toDate(left.createdAt).getTime()
+    );
+
+    const todayPosts: Post[] = [];
+    const yesterdayPosts: Post[] = [];
+    const lastWeekPosts: Post[] = [];
+    const olderByWeek = new Map<string, Post[]>();
+
+    sortedPosts.forEach((post) => {
+      const postDate = toDate(post.createdAt);
+      const postDay = startOfDay(postDate);
+
+      if (isSameDay(postDay, today)) {
+        todayPosts.push(post);
+        return;
+      }
+
+      if (isSameDay(postDay, yesterday)) {
+        yesterdayPosts.push(post);
+        return;
+      }
+
+      if (postDay >= lastWeekStart) {
+        lastWeekPosts.push(post);
+        return;
+      }
+
+      const weekLabel = formatWeekRange(postDate);
+      const existing = olderByWeek.get(weekLabel) ?? [];
+      olderByWeek.set(weekLabel, [...existing, post]);
+    });
+
+    return {
+      now,
+      todayPosts,
+      yesterdayPosts,
+      lastWeekPosts,
+      olderByWeek,
+    };
+  }, [posts]);
 
   return (
     <div className="position-relative" style={{ height: "100%" }}>
@@ -68,50 +174,73 @@ export default function ListOfPostsSidebar({
 
           {/* Scrollable thread list */}
           <div className="flex-grow-1 overflow-auto">
+            {groupedPosts.todayPosts.length > 0 && (
+              <SectionHeader title="Today">
+                {groupedPosts.todayPosts.map((post) => (
+                  <ThreadItem
+                    key={post.id}
+                    title={post.title}
+                    subtitle={post.body}
+                    time={formatPostTime(toDate(post.createdAt), groupedPosts.now)}
+                    instructorPosted={post.instructorPosted}
+                    instructorEndorses={post.instructorEndorses}
+                    instructorAnswered={post.instructorAnswered}
+                  />
+                ))}
+              </SectionHeader>
+            )}
 
-            <SectionHeader title="Today" />
-            <ThreadItem
-              title="How to make buttons sit on the right side of "
-              subtitle="In Homework one, we are implementing an assignment editor page..."
-              time="04:09 PM"
-              instructorAnswered
-            />
-            <ThreadItem
-              title="Clarification on Lab1"
-              subtitle="In the anchor tag part of lab1..."
-              time="02:43 PM"
-              instructorEndorses
-            />
+            {groupedPosts.yesterdayPosts.length > 0 && (
+              <SectionHeader title="Yesterday">
+                {groupedPosts.yesterdayPosts.map((post) => (
+                  <ThreadItem
+                    key={post.id}
+                    title={post.title}
+                    subtitle={post.body}
+                    time={formatPostTime(toDate(post.createdAt), groupedPosts.now)}
+                    instructorPosted={post.instructorPosted}
+                    instructorEndorses={post.instructorEndorses}
+                    instructorAnswered={post.instructorAnswered}
+                  />
+                ))}
+              </SectionHeader>
+            )}
 
-            <SectionHeader title="Yesterday" />
-            <ThreadItem
-              title="Heet Kanani - Office hours"
-              subtitle="Hello everyone, I'm holding office hours..."
-              time="06:56 AM"
-              instructorPosted
-            />
+            {groupedPosts.lastWeekPosts.length > 0 && (
+              <SectionHeader title="Last Week">
+                {groupedPosts.lastWeekPosts.map((post) => (
+                  <ThreadItem
+                    key={post.id}
+                    title={post.title}
+                    subtitle={post.body}
+                    time={formatPostTime(toDate(post.createdAt), groupedPosts.now)}
+                    instructorPosted={post.instructorPosted}
+                    instructorEndorses={post.instructorEndorses}
+                    instructorAnswered={post.instructorAnswered}
+                  />
+                ))}
+              </SectionHeader>
+            )}
 
-            <SectionHeader title="Last Week" />
-            <ThreadItem
-              title="Aryan Mehta - Office Hours"
-              subtitle="Good Evening, I am holding office hours today today 
-              today today today today today today today today today today today today cool coool coooooool coool"
-              time="Friday"
-              instructorPosted
-            />
+            {[...groupedPosts.olderByWeek.entries()].map(([weekRange, weekPosts]) => (
+              <SectionHeader key={weekRange} title={weekRange}>
+                {weekPosts.map((post) => (
+                  <ThreadItem
+                    key={post.id}
+                    title={post.title}
+                    subtitle={post.body}
+                    time={formatPostTime(toDate(post.createdAt), groupedPosts.now)}
+                    instructorPosted={post.instructorPosted}
+                    instructorEndorses={post.instructorEndorses}
+                    instructorAnswered={post.instructorAnswered}
+                  />
+                ))}
+              </SectionHeader>
+            ))}
 
-            {/* 
-              Additional category accordions list posts grouped by what week they were posted in
-              The name of the category should be Monday's Date of Week - Sunday's Date of Week, 
-              e.g., if a week starts on Monday January 7, then the name of the category would be 1/7 - 1/13
-            */}
-            <SectionHeader title="1/7 - 1/13" />
-            <ThreadItem
-              title="Sahil Patel - Office Hours"
-              subtitle="Hi all, I will be holding office hours this week on..."
-              time="1/10/2024"
-              instructorPosted
-            />
+            {posts.length === 0 && (
+              <div className="p-3 text-muted small">No posts yet.</div>
+            )}
           </div>
         </div>
       )}

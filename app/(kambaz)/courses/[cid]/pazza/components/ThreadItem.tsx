@@ -23,14 +23,14 @@ export default function ThreadItem({
       <div className="d-flex flex-column justify-content-between">
         <div className="d-flex flex-row fw-semibold text-truncate">
           {instructorPosted && (
-            <Badge bg="light" className="me-1 mt-1 h-75 d-flex small align-items-center w-50 ml-2" title="An instructor posted this question">
+            <Badge bg="light" className="me-1 mt-1 h-75 d-flex small align-items-center w-25 ml-2" title="An instructor posted this question">
               <FaSquare className="text-warning me-1" />
               <span className="font-bold text-pazza-gray">Instr</span>
             </Badge>
           )}
-          {title.length > 30 ? (
+          {title.length > 24 ? (
             <>
-              {title.slice(0, 30)}
+              {title.slice(0, 24)}
               {"..."}
             </>
           ) : (
